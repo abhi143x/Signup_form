@@ -2,17 +2,18 @@ const express = require("express");
 const mysql = require("mysql2");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+require("dotenv").config(); // <-- Load .env variables
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-// MySQL Connection
+// MySQL Connection using environment variables
 const db = mysql.createConnection({
-    host: "127.0.0.1",
-    user: "root",  // Change to your MySQL username
-    password: "abhi@123",  // Change to your MySQL password
-    database: "signup_db"
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME
 });
 
 db.connect(err => {
@@ -26,6 +27,14 @@ db.connect(err => {
 // Signup Route
 app.post("/signup", (req, res) => {
     const { fullname, email, contact, password } = req.body;
+
+      // Log user data to the console
+    console.log("New signup request:");
+    console.log("Full Name:", fullname);
+    console.log("Email:", email);
+    console.log("Contact:", contact);
+    console.log("Password:", password);
+    
     const sql = "INSERT INTO users (fullname, email, contact, password) VALUES (?, ?, ?, ?)";
 
     db.query(sql, [fullname, email, contact, password], (err, result) => {
@@ -36,7 +45,8 @@ app.post("/signup", (req, res) => {
     });
 });
 
-const PORT = 5000;
+// Start server
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });

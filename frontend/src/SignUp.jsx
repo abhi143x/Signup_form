@@ -25,7 +25,7 @@ const SignupForm = () => {
             });
 
             const data = await response.json();
-            alert(data.message);
+            alert(`Welcome, ${formData.fullname}! You've signed up successfully.`);
             setFormData({ fullname: "", email: "", contact: "", password: "" });
         } catch (error) {
             alert("Error signing up. Try again.");
