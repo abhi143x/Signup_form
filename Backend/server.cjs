@@ -10,43 +10,45 @@ app.use(bodyParser.json());
 
 // MySQL Connection using environment variables
 const db = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
+  database: process.env.DB_NAME,
 });
 
-db.connect(err => {
-    if (err) {
-        console.error("Database connection failed: " + err.stack);
-        return;
-    }
-    console.log("Connected to MySQL Database.");
+db.connect((err) => {
+  if (err) {
+    console.error("Database connection failed: " + err.stack);
+    return;
+  }
+  console.log("Connected to MySQL Database.");
 });
 
 // Signup Route
 app.post("/signup", (req, res) => {
-    const { fullname, email, contact, password } = req.body;
+  const { fullname, email, contact, password } = req.body;
 
-      // Log user data to the console
-    console.log("New signup request:");
-    console.log("Full Name:", fullname);
-    console.log("Email:", email);
-    console.log("Contact:", contact);
-    console.log("Password:", password);
-    
-    const sql = "INSERT INTO users (fullname, email, contact, password) VALUES (?, ?, ?, ?)";
+  // Log user data to the console
+  console.log("New signup request:");
+  console.log("Full Name:", fullname);
+  console.log("Email:", email);
+  console.log("Contact:", contact);
+  console.log("Password:", password);
 
-    db.query(sql, [fullname, email, contact, password], (err, result) => {
-        if (err) {
-            return res.status(500).json({ error: "Database error" });
-        }
-        res.status(201).json({ message: "User registered successfully!" });
-    });
+  const sql =
+    "INSERT INTO users (fullname, email, contact, password) VALUES (?, ?, ?, ?)";
+
+  db.query(sql, [fullname, email, contact, password], (err, result) => {
+    if (err) {
+      return res.status(500).json({ error: "Database error" });
+    }
+    res.status(201).json({ message: "User registered successfully!" });
+  });
 });
 
 // Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
