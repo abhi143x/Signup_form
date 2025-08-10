@@ -34,19 +34,11 @@ app.get("/ping", (req, res) => {
 app.post("/signup", (req, res) => {
   const { fullname, email, contact, password } = req.body;
 
-  // Log user data to the console
-  console.log("New signup request:");
-  console.log("Full Name:", fullname);
-  console.log("Email:", email);
-  console.log("Contact:", contact);
-  console.log("Password:", password);
-
-  const sql =
-    "INSERT INTO users (fullname, email, contact, password) VALUES (?, ?, ?, ?)";
-
+  const sql = "INSERT INTO users (fullname, email, contact, password) VALUES (?, ?, ?, ?)";
   db.query(sql, [fullname, email, contact, password], (err, result) => {
     if (err) {
-      return res.status(500).json({ error: "Database error" });
+      console.error("MySQL Insert Error:", err.code, err.sqlMessage);
+      return res.status(500).json({ error: err.sqlMessage });
     }
     res.status(201).json({ message: "User registered successfully!" });
   });
