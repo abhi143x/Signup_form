@@ -16,7 +16,7 @@ const SignupForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // ✅ Environment variable with fallback
+        //  Environment variable with fallback
         const apiBaseUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
         try {
@@ -34,8 +34,7 @@ const SignupForm = () => {
             alert(`Welcome, ${formData.fullname}! You've signed up successfully. Open the console to see your data.`);
 
             // Show submitted data in console
-            console.log("📌 Submitted Data:", formData);
-            console.log("📌 Server Response:", data);
+            console.log("Submitted Data:", formData);
 
             setFormData({ fullname: "", email: "", contact: "", password: "" });
         } catch (error) {
