@@ -25,6 +25,11 @@ db.connect((err) => {
   console.log("Connected to MySQL Database.");
 });
 
+// Ping test route
+app.get("/ping", (req, res) => {
+  res.send("pong");
+});
+
 // Signup Route
 app.post("/signup", (req, res) => {
   const { fullname, email, contact, password } = req.body;
